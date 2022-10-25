@@ -189,15 +189,69 @@ So $P\left(C_{1} \mid x\right)=\sigma(w \cdot x+b)$ In generative model , we est
 
 
 
+Step 1.Function set .
+
+As we known posterior probability ,  $f_{w, b}(x)=\sigma\left(\sum_{i} w_{i} x_{i}+b\right)$ and it's output between 0 and 1 .
+
+Step 2.Goodness of a function
+
+Assume the data is generated based on $f_{w, b}(x)=P_{w, b}\left(C_{1} \mid x\right)$ , and we can get its probability of generating the data : if we want the probability of $x^3$ ,so the formula is $L(w, b)=f_{w, b}\left(x^{1}\right) f_{w, b}\left(x^{2}\right)\left(1-f_{w, b}\left(x^{3}\right)\right) \cdots f_{w, b}\left(x^{N}\right)$ . And we want to $w^* , b^*$, so it can be calculated as $w^{*}, b^{*}=\arg \min _{w, b}-\ln L(w, b)$. $\hat{y}^n$:1 for class 1 , 0 for class 2.  Each $-\ln L(w,b)=-\left[\hat{y}^{i} \ln f\left(x^{i}\right)+\left(1-\hat{y}^{i}\right) \ln \left(1-f\left(x^{i}\right)\right)\right]$ .
+
+$-\ln L(w,b)=\sum_{n}-{\left[\hat{y}^{n} \ln f_{w, b}\left(x^{n}\right)+\left(1-\hat{y}^{n}\right) \ln \left(1-f_{w, b}\left(x^{n}\right)\right)\right]}$ In fact , it's the sum of Cross entropy between two Bernoulli distribution.
+
+### Cross entropy
+
+ $C\left(f\left(x^{n}\right), \hat{y}^{n}\right)=-\left[\hat{y}^{n} \ln f\left(x^{n}\right)+\left(1-\hat{y}^{n}\right) \ln \left(1-f\left(x^{n}\right)\right)\right]$
+
+For distribution p:$p(x=1)=\hat{y}^n,p(x=0)=1-\hat{y}^n$,
+
+For distribution q :$q(x=1)=f(x^n),q(x=0)=1-f(x^n)$, 
+
+p and q are called cross entropy. $H(p, q)=-\sum_{x} p(x) \ln (q(x))$. 
 
 
 
+Step 3. Find the bet function
 
+Logistic regression+Cross Entropy: $ w_{i} \leftarrow w_{i}-\eta \sum_{n}-\left(\hat{\hat{y}}^{n}-f_{w, b}\left(x^{n}\right)\right) x_{i}^{n}$
 
+Logistic regression+Square Error: $\frac{\partial\left(f_{w, b}(x)-\hat{y}\right)^{2}}{\partial w_{i}}=2\left(f_{w, b}(x)-\hat{y}\right) f_{w, b}(x)\left(1-f_{w, b}(x)\right) x_{i}$
 
+$\hat{y}^n =1 $ If $f_{w, b}\left(x^{n}\right)=1$(close to target) then $ \frac{\partial L}  {\partial w_{i}}=0$ , but if $f_{w,b}(x^n)=0$(far from target) then $ \frac{\partial L}  {\partial w_{i}}=0$  .So this model is not very perfect.
 
+### Generative vs. Discriminative
 
+Benefit of generative model；
 
+1.With the assumption of probability distribution , less training data is needed
+
+2.With the assumption of probability distribution , more robust to the noise.
+
+3.Priors and class-dependent probabilities can be estimated from different sources.
+
+### Multi-Class Classification 
+
+![image-20221024140051075](./assets/image-20221024140051075.png)
+
+### Limitation of Logistic Regression
+
+Given an example : we can't solve the problem by input feature.
+
+$$\begin{array}{|c|c|c|}
+\hline \text { Input Feature } &\text { Input Feature }&\text{label} \\
+\hline x_{1} & x_{2} & \\
+\hline 0 & 0 & \text { Class 2 } \\
+\hline 0 & 1 & \text { Class 1 } \\
+\hline 1 & 0 & \text { Class 1 } \\
+\hline 1 & 1 & \text { Class 2 } \\
+\hline
+\end{array}$$
+
+So we can transform feature: define $x_1^\prime$:distance to $\left[\begin{array}{l}0 \\0\end{array}\right]$, define $x_2^\prime$:distance to $\left[\begin{array}{l}1 \\1\end{array}\right]$
+
+How to find such transformation: Cascading logistic regression models ,we call one logistic regression "Neuron" , so cascading logistic regression is Neural Network.
+
+![image-20221024143751354](./assets/image-20221024143751354.png)
 
 
 
@@ -431,4 +485,6 @@ torch.save(model.state_dict(),path)
 ckpt = torch.load(path)
 model.load_state_dict(ckpt)
 ```
+
+跨模态算法（2） ：语音和图像 图像和文本   数据库（2）
 
