@@ -5,5 +5,8 @@
   "autoPairBrackets": true,
   "alwaysUpdateLinks": true,
   "showUnsupportedFiles": true,
-  "promptDelete": false
+  "promptDelete": false,
+  "newFileLocation": "current",
+  "newLinkFormat": "shortest",
+  "attachmentFolderPath": "附件"
 }
